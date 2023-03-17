@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp">
+
+    <ImageView
+        android:id="@+id/photo_restaurant"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/name_restaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/photo_restaurant"
+        app:layout_constraintLeft_toRightOf="@+id/photo_restaurant"
+        tools:text="La Casa di Pizza"/>
+
+    <TextView
+        android:id="@+id/adress_restaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textSize="11sp"
+        app:layout_constraintTop_toBottomOf="@+id/name_restaurant"
+        app:layout_constraintLeft_toRightOf="@+id/photo_restaurant"
+        tools:text="24 Rue des glandus"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
