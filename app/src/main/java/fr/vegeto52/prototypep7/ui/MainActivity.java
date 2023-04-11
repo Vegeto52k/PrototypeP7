@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mBinding;
     private List<Restaurant.Results> mResultsList;
 
+    String mName;
+    User mUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,15 @@ public class MainActivity extends AppCompatActivity {
         initUI();
         initViewModel();
 
-        mUserRepository.createUser("1", "Arthur", "https://static.wikia.nocookie.net/kaamelott-officiel/images/8/85/Arthur.jpg/revision/latest/scale-to-width-down/250?cb=20210629111653&path-prefix=fr");
+    //    mUserRepository.createUser("1", "Arthur", "https://static.wikia.nocookie.net/kaamelott-officiel/images/8/85/Arthur.jpg/revision/latest/scale-to-width-down/250?cb=20210629111653&path-prefix=fr");
+    //    mUserRepository.updateFavoriteRestoList("ChIJuwXhnAW6j4AR2aWGYgu5cLM", true);
+    //    mUserRepository.updateFavoriteRestoList("ChIJOYvCo1W3j4AR1LAifgk13rs", false);
+    //    mUserRepository.updateSelectedResto("ChIJOYvCo1W3j4AR1LAifgk13rs", true);
+    //    mUserRepository.updateSelectedResto("ChIJK-D4c1a3j4ARz3kpN8rVwFo", true);
+
+    //    mUserRepository.getUsername();
+    //    mUserRepository.getUrlPhoto();
+        mUserRepository.getPlaceIdResto();
 
     }
 

@@ -43,7 +43,7 @@ public class LocationRepository {
 
                 mLocationMutableLiveData.setValue(mLocation);
 
-                Log.d("Verif getLocation", "Objectif Atteint");
+                Log.d("Verif getLocation", "Objectif Atteint" + mLocation);
             }
         });
     }

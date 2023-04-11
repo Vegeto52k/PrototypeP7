@@ -30,6 +30,7 @@ public class NearbySearchRepository {
 
     MutableLiveData<List<Restaurant.Results>> mRestaurants = new MutableLiveData<>();
 
+    PlaceDetailsRepository mPlaceDetailsRepository = new PlaceDetailsRepository();
 
 
     public void getRestaurantsList(Location location) {
@@ -48,10 +49,16 @@ public class NearbySearchRepository {
             public void onResponse(Call<Restaurant> call, Response<Restaurant> response) {
 
                 mRestaurants.setValue(response.body().getResults());
+
+                mPlaceDetailsRepository.getPlaceDetails("ChIJOYvCo1W3j4AR1LAifgk13rs");
+
                 Log.d("Test Repo", " " + response.body().getResults().size());
 
                 for (Restaurant.Results results : response.body().getResults()) {
-                    Log.d("Test ResponseBody", "onResponse: " + results.getName());
+                    Log.d("Test ResponseBody", "onResponse: " + results.getName() + " + PlaceId: " + results.getPlace_id());
+
+                //    mPlaceDetailsRepository.getPlaceDetails("ChIJOYvCo1W3j4AR1LAifgk13rs");
+
                 }
                 if (!response.isSuccessful()) {
 
