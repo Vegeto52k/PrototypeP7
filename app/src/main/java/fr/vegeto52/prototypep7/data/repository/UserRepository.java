@@ -107,10 +107,10 @@ public class UserRepository {
         if (uid != null){
             if (selected){
                 getUsersCollection().document(uid).update(
-                        "SELECTED_RESTO",
+                        "selectedResto",
                         FieldValue.delete());
                 getUsersCollection().document(uid).update(
-                      "SELECTED_RESTO",
+                      "selectedResto",
                         FieldValue.arrayUnion(placeId));
             }
         }
