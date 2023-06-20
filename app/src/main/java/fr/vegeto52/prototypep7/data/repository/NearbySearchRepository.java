@@ -42,15 +42,13 @@ public class NearbySearchRepository {
 
         mNearbySearchApi = RetrofitService.getRetrofitInstance().create(NearbySearchApi.class);
 
-        Log.d("Test Liste Restaurants", "Coucou" + mCurrentLatitude + " " + mCurrentLongitude);
-
         mNearbySearchApi.getObjectRestaurant(mLatLng, radius, type, map_key).enqueue(new Callback<Restaurant>() {
             @Override
             public void onResponse(Call<Restaurant> call, Response<Restaurant> response) {
 
                 mRestaurants.setValue(response.body().getResults());
 
-                mPlaceDetailsRepository.getPlaceDetails("ChIJOYvCo1W3j4AR1LAifgk13rs");
+            //    mPlaceDetailsRepository.getPlaceDetails("ChIJOYvCo1W3j4AR1LAifgk13rs");
 
                 Log.d("Test Repo", " " + response.body().getResults().size());
 

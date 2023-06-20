@@ -38,12 +38,13 @@ public class LocationRepository {
             @Override
             public void onSuccess(Location location) {
                 mLocation = location;
+                Log.d("Verif getLocation", "Objectif Atteint" + mLocation);
                 mCurrentLatitude = mLocation.getLatitude();
                 mCurrentLongitude = mLocation.getLongitude();
 
                 mLocationMutableLiveData.setValue(mLocation);
 
-                Log.d("Verif getLocation", "Objectif Atteint" + mLocation);
+
             }
         });
     }

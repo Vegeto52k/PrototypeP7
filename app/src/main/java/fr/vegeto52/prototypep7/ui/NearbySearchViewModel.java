@@ -28,7 +28,6 @@ public class NearbySearchViewModel extends ViewModel {
     public void getListRestaurantName() {
 
         mLocationRepository.getLocation();
-        Log.d("Verif Search", "For moment, it's ok");
         mLocationRepository.getLocationFromRepo().observeForever(new Observer<Location>() {
             @Override
             public void onChanged(Location location) {
@@ -36,6 +35,8 @@ public class NearbySearchViewModel extends ViewModel {
             }
         });
     }
+
+
 
     public MutableLiveData<List<Restaurant.Results>> getRestaurants(){
         return mNearbySearchRepository.getListRestaurant();

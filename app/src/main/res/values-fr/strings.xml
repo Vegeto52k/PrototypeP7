@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PrototypeP7</string>
+
+    <!-- Authentication Activity-->
+    <string name="find_a_nice_restaurant">Trouve un bon restaurant et invite tes collègues pour déjeuner !</string>
+    <string name="sign_in_with_facebook">Connexion avec Facebook</string>
+    <string name="sign_in_with_google">Connexion avec Google</string>
+    <string name="facebook_authentication_cancelled">Authentification Facebook annulée</string>
+    <string name="facebook_authentication_failed">Authentification Facebook échouée</string>
+    <string name="authentication_failed">Authentification échouée</string>
+
+    <!-- Main Activity -->
+    <string name="search">Recherche</string>
+    <string name="your_lunch">VOTRE CHOIX</string>
+    <string name="settings">PARAMETRES</string>
+    <string name="logout">DECONNEXION</string>
+    <string name="map_view">Carte</string>
+    <string name="list_view">Restaurants</string>
+    <string name="workmates">Collègues</string>
+    <string name="no_restaurant_selected">Aucun restaurant sélectionné.</string>
+
+    <!-- Adapter -->
+    <string name="is_eating_at">%s mange chez %s</string>
+    <string name="has_not_decided_yet">%s n\'a pas encore choisi</string>
+    <string name="the_restaurant_is_closed_today">Le restaurant est fermé aujourd\'hui</string>
+    <string name="no_information_on_opening_closing_hours">Aucune information sur les heures d\'ouverture/fermeture</string>
+
+    <!-- Fragment -->
+    <string name="no_restaurants_nearby">Aucun restaurant à proximité</string>
+    <string name="no_workmates_registered">Aucun collègue enregistré</string>
+    <string name="no_phone_number_provided">Aucun numéro de téléphone renseigné</string>
+    <string name="like">Aime</string>
+    <string name="dislike">N\'aime pas</string>
+    <string name="website">Site Internet</string>
+    <string name="call">Appeler</string>
+    <string name="restaurant_added_to_favorites">Restaurant ajouté aux favoris</string>
+    <string name="restaurant_removed_from_favorites">Restaurant retiré des favoris</string>
+    <string name="no_website_provided">Aucun site internet renseigné</string>
+
+    <!-- Notifications -->
+    <string name="recap_for_lunch">Récapitulatif pour le déjeuner</string>
+    <string name="info_lunch">\nVous avez choisi de manger chez %s.\n\nVoici l\'adresse du restaurant : %s.\n\nVoici la liste des personnes allant dans ce restaurant : %s.</string>
+
+    <!-- Sort Menu -->
+    <string name="sort_by_name">Trier par noms</string>
+    <string name="sort_by_distance">Trier par distances</string>
+    <string name="sort_by_rating">Trier par notes</string>
+    <string name="sort_by_workmates">Trier par collègues</string>
+
+</resources>

@@ -52,7 +52,7 @@ public class PlaceDetailsViewModel extends ViewModel {
 
     private void loadData(String placeId){
         MutableLiveData<RestaurantDetails.Result> restaurantDetailsMutableLiveData = mPlaceDetailsRepository.getRestaurantDetailsMutableLiveData();
-        MutableLiveData<List<User>> userList = mUserRepository.getListUserFromRepo(placeId);
+        MutableLiveData<List<User>> userList = mUserRepository.getListUserFromRepo();
 
         mMediatorLiveData.addSource(userList, new Observer<List<User>>() {
             @Override

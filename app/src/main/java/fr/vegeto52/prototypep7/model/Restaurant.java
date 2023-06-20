@@ -55,6 +55,25 @@ public class Restaurant {
         private Geometry geometry;
         private String business_status;
 
+        private float distance;
+        private int workmates_selected;
+
+        public float getDistance() {
+            return distance;
+        }
+
+        public void setDistance(float distance) {
+            this.distance = distance;
+        }
+
+        public int getWorkmates_selected(){
+            return workmates_selected;
+        }
+
+        public void setWorkmates_selected(int workmates_selected) {
+            this.workmates_selected = workmates_selected;
+        }
+
         public String getVicinity() {
             return vicinity;
         }

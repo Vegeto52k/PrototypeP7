@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/baseline_sort_24"
+        android:title="@string/action_filter"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/sort_name"
+                android:title="@string/sort_by_name"/>
+            <item
+                android:id="@+id/sort_distance"
+                android:title="@string/sort_by_distance"/>
+            <item
+                android:id="@+id/sort_rating"
+                android:title="@string/sort_by_rating"/>
+            <item
+                android:id="@+id/sort_workmates"
+                android:title="@string/sort_by_workmates"/>
+        </menu>
+    </item>
+</menu>

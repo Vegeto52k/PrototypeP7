@@ -1,3 +1,63 @@
 <resources>
     <string name="app_name">PrototypeP7</string>
+
+    <!-- Authentication Activity-->
+    <string name="go4lunch" translatable="false">Go4Lunch</string>
+    <string name="find_a_nice_restaurant">Find a nice restaurant and invite your co-workers for lunch !</string>
+    <string name="sign_in_with_facebook">Sign in with Facebook</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="facebook_authentication_cancelled">Facebook authentication cancelled</string>
+    <string name="facebook_authentication_failed">Facebook authentication failed</string>
+    <string name="authentication_failed">Authentication failed</string>
+
+    <!-- Main Activity -->
+    <string name="search">Search</string>
+    <string name="your_lunch">YOUR LUNCH</string>
+    <string name="settings">SETTINGS</string>
+    <string name="logout">LOGOUT</string>
+    <string name="map_view">Map View</string>
+    <string name="list_view">List View</string>
+    <string name="workmates">Workmates</string>
+    <string name="no_restaurant_selected">No restaurant selected.</string>
+
+    <!-- Adapter -->
+    <string name="is_eating_at">%s is eating at %s</string>
+    <string name="has_not_decided_yet">%s hasn\'t decided yet</string>
+    <string name="the_restaurant_is_closed_today">The restaurant is closed today</string>
+    <string name="no_information_on_opening_closing_hours">No information on opening/closing hours</string>
+    <string name="count_user" translatable="false">(%d)</string>
+    
+    <!-- Fragment -->
+    <string name="no_restaurants_nearby">No restaurants nearby</string>
+    <string name="no_workmates_registered">No workmates registered</string>
+    <string name="no_phone_number_provided">No phone number provided</string>
+    <string name="like">Like</string>
+    <string name="dislike">Dislike</string>
+    <string name="website">Website</string>
+    <string name="call">Call</string>
+    <string name="restaurant_added_to_favorites">Restaurant added to favorites</string>
+    <string name="restaurant_removed_from_favorites">Restaurant removed from favorites</string>
+    <string name="no_website_provided">No website provided</string>
+
+    <!-- Notifications -->
+    <string name="recap_for_lunch">Recap for lunch</string>
+    <string name="info_lunch">\nYou have chosen to eat at %s.\n\nHere is the address of the restaurant : %s.\n\nHere is the list of people going to this restaurant : %s.</string>
+
+    <!-- Facebook -->
+    <string name="facebook_app_id" translatable="false">792849425603305</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb792849425603305</string>
+    <string name="facebook_client_token" translatable="false">b7c7238d021f0f2b562d4c4864583770</string>
+
+    <!-- Used in NavigationDrawer -->
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+
+    <!-- Sort Menu -->
+    <string name="action_filter" translatable="false">Action filter</string>
+    <string name="sort_by_name">Sort by names</string>
+    <string name="sort_by_distance">Sort by distances</string>
+    <string name="sort_by_rating">Sort by ratings</string>
+    <string name="sort_by_workmates">Sort by workmates</string>
+
+
 </resources>

@@ -5,11 +5,15 @@ import java.util.List;
 /**
  * Created by Vegeto52-PC on 29/03/2023.
  */
-public abstract class RestaurantDetails {
+public class RestaurantDetails {
+
+    public RestaurantDetails() {
+    }
 
     private String status;
     private Result result;
     private List<String> html_attributions;
+
 
     public String getStatus() {
         return status;
@@ -44,7 +48,7 @@ public abstract class RestaurantDetails {
         private List<String> types;
         private List<Reviews> reviews;
         private String reference;
-        private int rating;
+        private double rating;
         private Plus_code plus_code;
         private String place_id;
         private List<Photos> photos;
@@ -125,7 +129,7 @@ public abstract class RestaurantDetails {
             this.reference = reference;
         }
 
-        public int getRating() {
+        public double getRating() {
             return rating;
         }
 

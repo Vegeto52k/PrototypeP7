@@ -17,7 +17,7 @@ import retrofit2.Response;
  */
 public class PlaceDetailsRepository {
 
-    PlaceDetailsApi mPlaceDetailsApi;
+    private PlaceDetailsApi mPlaceDetailsApi;
 
     String mPlaceDetails;
     String mPhoneNumber;
@@ -31,21 +31,18 @@ public class PlaceDetailsRepository {
 
     public void getPlaceDetails(String placeId){
 
-        Log.d("Coucou4", "Je suis là, ici !");
-
         mPlaceDetails = placeId;
+
 
         mPlaceDetailsApi = RetrofitService.getRetrofitInstance().create(PlaceDetailsApi.class);
         mPlaceDetailsApi.getDetails(mPlaceDetails, mKey).enqueue(new Callback<RestaurantDetails>() {
             @Override
             public void onResponse(Call<RestaurantDetails> call, Response<RestaurantDetails> response) {
-                Log.d("Coucou3", "Je suis là, ici !");
                 mRestaurantDetailsMutableLiveData.setValue(response.body().getResult());
             }
 
             @Override
             public void onFailure(Call<RestaurantDetails> call, Throwable t) {
-                Log.d("Coucou5", "Je suis là, ici !" + t.getMessage());
             }
         });
     }

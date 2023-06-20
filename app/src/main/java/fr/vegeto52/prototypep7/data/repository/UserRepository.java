@@ -199,7 +199,7 @@ public class UserRepository {
         });
     }
 
-    public MutableLiveData<List<User>> getListUserFromRepo(String placeId){
+    public MutableLiveData<List<User>> getListUserFromRepo(){
         return mListUserMutableLiveData;
     }
 }
