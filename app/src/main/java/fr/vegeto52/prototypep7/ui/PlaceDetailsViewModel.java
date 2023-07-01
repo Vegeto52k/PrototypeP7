@@ -3,6 +3,7 @@ package fr.vegeto52.prototypep7.ui;
 import android.location.Location;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -13,7 +14,6 @@ import java.util.List;
 import fr.vegeto52.prototypep7.data.repository.LocationRepository;
 import fr.vegeto52.prototypep7.data.repository.PlaceDetailsRepository;
 import fr.vegeto52.prototypep7.data.repository.UserRepository;
-import fr.vegeto52.prototypep7.model.Restaurant;
 import fr.vegeto52.prototypep7.model.RestaurantDetails;
 import fr.vegeto52.prototypep7.model.RestaurantDetailsViewState;
 import fr.vegeto52.prototypep7.model.User;
@@ -42,7 +42,7 @@ public class PlaceDetailsViewModel extends ViewModel {
     public void getRestaurantDetails(String placeId){
 
         mPlaceDetailsRepository.getPlaceDetails(placeId);
-        mPlaceDetailsRepository.getRestaurantDetailsMutableLiveData().observeForever(new Observer<RestaurantDetails.Result>() {
+        mPlaceDetailsRepository.getPlaceDetailsMutableLiveData().observeForever(new Observer<RestaurantDetails.Result>() {
             @Override
             public void onChanged(RestaurantDetails.Result result) {
 
@@ -51,8 +51,8 @@ public class PlaceDetailsViewModel extends ViewModel {
     }
 
     private void loadData(String placeId){
-        MutableLiveData<RestaurantDetails.Result> restaurantDetailsMutableLiveData = mPlaceDetailsRepository.getRestaurantDetailsMutableLiveData();
-        MutableLiveData<List<User>> userList = mUserRepository.getListUserFromRepo();
+        LiveData<RestaurantDetails.Result> restaurantDetailsMutableLiveData = mPlaceDetailsRepository.getPlaceDetailsMutableLiveData();
+        LiveData<List<User>> userList = mUserRepository.getListUserFromRepo();
 
         mMediatorLiveData.addSource(userList, new Observer<List<User>>() {
             @Override
@@ -75,7 +75,7 @@ public class PlaceDetailsViewModel extends ViewModel {
     }
 
     public Location UserLocation(){
-        mLocationRepository.getLocationFromRepo().observeForever(new Observer<Location>() {
+        mLocationRepository.getLocationMutableLiveData().observeForever(new Observer<Location>() {
             @Override
             public void onChanged(Location location) {
                 mUserLocation = location;

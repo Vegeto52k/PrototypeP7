@@ -10,11 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -157,7 +155,7 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback {
     //    mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
         mLocationRepository.getLocation();
-        mLocationRepository.getLocationFromRepo().observeForever(new Observer<Location>() {
+        mLocationRepository.getLocationMutableLiveData().observeForever(new Observer<Location>() {
             @Override
             public void onChanged(Location location) {
                 mUserLatitude = location.getLatitude();

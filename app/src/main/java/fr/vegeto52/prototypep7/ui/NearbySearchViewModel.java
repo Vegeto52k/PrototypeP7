@@ -1,8 +1,8 @@
 package fr.vegeto52.prototypep7.ui;
 
 import android.location.Location;
-import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -28,17 +28,17 @@ public class NearbySearchViewModel extends ViewModel {
     public void getListRestaurantName() {
 
         mLocationRepository.getLocation();
-        mLocationRepository.getLocationFromRepo().observeForever(new Observer<Location>() {
+        mLocationRepository.getLocationMutableLiveData().observeForever(new Observer<Location>() {
             @Override
             public void onChanged(Location location) {
-                mNearbySearchRepository.getRestaurantsList(location);
+                mNearbySearchRepository.getNearBySearch(location);
             }
         });
     }
 
 
 
-    public MutableLiveData<List<Restaurant.Results>> getRestaurants(){
-        return mNearbySearchRepository.getListRestaurant();
+    public LiveData<List<Restaurant.Results>> getRestaurants(){
+        return mNearbySearchRepository.getNearBySearchMutableLiveData();
     }
 }

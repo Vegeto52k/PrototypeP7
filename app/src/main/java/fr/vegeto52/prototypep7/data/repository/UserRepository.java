@@ -3,6 +3,7 @@ package fr.vegeto52.prototypep7.data.repository;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,7 +35,7 @@ public class UserRepository {
     private static volatile UserRepository instance;
     private FirebaseFirestore mFirebaseFirestore;
 
-    MutableLiveData<List<User>> mListUserMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<User>> mListUserMutableLiveData = new MutableLiveData<>();
     List<User> mUserList = new ArrayList<>();
 
     public static UserRepository getInstance() {
@@ -199,7 +200,7 @@ public class UserRepository {
         });
     }
 
-    public MutableLiveData<List<User>> getListUserFromRepo(){
+    public LiveData<List<User>> getListUserFromRepo(){
         return mListUserMutableLiveData;
     }
 }

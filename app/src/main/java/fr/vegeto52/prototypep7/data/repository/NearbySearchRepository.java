@@ -1,8 +1,8 @@
 package fr.vegeto52.prototypep7.data.repository;
 
 import android.location.Location;
-import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
@@ -28,12 +28,12 @@ public class NearbySearchRepository {
     String type = "restaurant";
     String map_key = "AIzaSyArVUpejXwZw7QhmdFpVY9rHai7Y2adWrI";
 
-    MutableLiveData<List<Restaurant.Results>> mRestaurants = new MutableLiveData<>();
+    private final MutableLiveData<List<Restaurant.Results>> mListMutableLiveData = new MutableLiveData<>();
 
-    PlaceDetailsRepository mPlaceDetailsRepository = new PlaceDetailsRepository();
+    public NearbySearchRepository() {
+    }
 
-
-    public void getRestaurantsList(Location location) {
+    public void getNearBySearch(Location location) {
 
         mCurrentLatitude = location.getLatitude();
         mCurrentLongitude = location.getLongitude();
@@ -45,31 +45,17 @@ public class NearbySearchRepository {
         mNearbySearchApi.getObjectRestaurant(mLatLng, radius, type, map_key).enqueue(new Callback<Restaurant>() {
             @Override
             public void onResponse(Call<Restaurant> call, Response<Restaurant> response) {
-
-                mRestaurants.setValue(response.body().getResults());
-
-            //    mPlaceDetailsRepository.getPlaceDetails("ChIJOYvCo1W3j4AR1LAifgk13rs");
-
-                Log.d("Test Repo", " " + response.body().getResults().size());
-
-                for (Restaurant.Results results : response.body().getResults()) {
-                    Log.d("Test ResponseBody", "onResponse: " + results.getName() + " + PlaceId: " + results.getPlace_id());
-
-                //    mPlaceDetailsRepository.getPlaceDetails("ChIJOYvCo1W3j4AR1LAifgk13rs");
-
-                }
-                if (!response.isSuccessful()) {
-
-                }
+                mListMutableLiveData.setValue(response.body().getResults());
             }
 
             @Override
             public void onFailure(Call<Restaurant> call, Throwable t) {
+                mListMutableLiveData.setValue(null);
             }
         });
     }
 
-    public MutableLiveData<List<Restaurant.Results>> getListRestaurant(){
-        return mRestaurants;
+    public LiveData<List<Restaurant.Results>> getNearBySearchMutableLiveData(){
+        return mListMutableLiveData;
     }
 }

@@ -1,9 +1,7 @@
 package fr.vegeto52.prototypep7.ui;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +104,7 @@ public class WorkmatesViewAdapter extends RecyclerView.Adapter<WorkmatesViewAdap
             String firstName = nameParts[0];
             if (!mPlaceId.isEmpty()) {
                 mPlaceDetailsRepository.getPlaceDetails(mPlaceId);
-                mPlaceDetailsRepository.getRestaurantDetailsMutableLiveData().observeForever(new Observer<RestaurantDetails.Result>() {
+                mPlaceDetailsRepository.getPlaceDetailsMutableLiveData().observeForever(new Observer<RestaurantDetails.Result>() {
                     @Override
                     public void onChanged(RestaurantDetails.Result result) {
                         String eatingAtRestaurant = mContext.getString(R.string.is_eating_at);

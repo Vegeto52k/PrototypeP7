@@ -3,7 +3,6 @@ package fr.vegeto52.prototypep7.ui;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +40,9 @@ import fr.vegeto52.prototypep7.model.RestaurantDetails;
 public class ListRestoViewAdapter extends RecyclerView.Adapter<ListRestoViewAdapter.ViewHolder> {
 
 
-    private List<Restaurant.Results> mRestaurants;
+    private static List<Restaurant.Results> mRestaurants;
+    private static Location mUserLocation;
+    private static RestaurantDetails.Result mRestaurantDetails;
     private String mPhotoReference;
 
     String baseUrl = "https://maps.googleapis.com/maps/api/place/photo";
@@ -54,6 +55,8 @@ public class ListRestoViewAdapter extends RecyclerView.Adapter<ListRestoViewAdap
 
     public ListRestoViewAdapter(List<Restaurant.Results> restaurants){
         mRestaurants = restaurants;
+//        mUserLocation = location;
+//        mRestaurantDetails = restaurantDetails;
     }
 
     @NonNull
@@ -90,7 +93,6 @@ public class ListRestoViewAdapter extends RecyclerView.Adapter<ListRestoViewAdap
                 }
             }
         });
-
     }
 
     @Override
@@ -105,8 +107,8 @@ public class ListRestoViewAdapter extends RecyclerView.Adapter<ListRestoViewAdap
         LocationRepository mLocationRepository = new LocationRepository();
         NearbySearchRepository mNearbySearchRepository = new NearbySearchRepository();
         RestaurantDetails.Result mRestaurantDetails;
-        Location mLocation;
         Location mLocationUser;
+        Location mLocation;
         double mLatitude;
         double mLongitude;
         String mPlaceId;
@@ -153,7 +155,13 @@ public class ListRestoViewAdapter extends RecyclerView.Adapter<ListRestoViewAdap
             mLocation = new Location("");
             mLocation.setLatitude(mLatitude);
             mLocation.setLongitude(mLongitude);
-            mLocationRepository.getLocationFromRepo().observeForever(new Observer<Location>() {
+
+//            if (mLocationUser != null){
+//                float distanceUserRestaurant = mLocationUser.distanceTo(mLocation);
+//                distance.setText(String.format(Locale.US, "%.0f m", distanceUserRestaurant));
+//                results.setDistance(distanceUserRestaurant);
+//            }
+            mLocationRepository.getLocationMutableLiveData().observeForever(new Observer<Location>() {
                 @Override
                 public void onChanged(Location location) {
                     if (location != null) {
@@ -179,13 +187,15 @@ public class ListRestoViewAdapter extends RecyclerView.Adapter<ListRestoViewAdap
             }
 
             mPlaceId = results.getPlace_id();
+
+
             mPlaceDetailsRepository.getPlaceDetails(mPlaceId);
-            mPlaceDetailsRepository.getRestaurantDetailsMutableLiveData().observeForever(new Observer<RestaurantDetails.Result>() {
+            mPlaceDetailsRepository.getPlaceDetailsMutableLiveData().observeForever(new Observer<RestaurantDetails.Result>() {
                 @Override
                 public void onChanged(RestaurantDetails.Result result) {
                    mRestaurantDetails = result;
-                    if (result.getOpening_hours() != null){
-                        List<RestaurantDetails.Periods> openingHours = result.getOpening_hours().getPeriods();
+                    if (mRestaurantDetails.getOpening_hours() != null){
+                        List<RestaurantDetails.Periods> openingHours = mRestaurantDetails.getOpening_hours().getPeriods();
                         if (openingHours != null){
                             Calendar calendar = Calendar.getInstance();
                             int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);

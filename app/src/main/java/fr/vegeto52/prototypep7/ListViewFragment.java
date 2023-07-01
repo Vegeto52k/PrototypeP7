@@ -1,16 +1,13 @@
 package fr.vegeto52.prototypep7;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,6 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,10 +30,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import fr.vegeto52.prototypep7.data.repository.FirestoreRepository;
 import fr.vegeto52.prototypep7.data.repository.LocationRepository;
-import fr.vegeto52.prototypep7.data.repository.UserRepository;
+import fr.vegeto52.prototypep7.data.repository.NearbySearchRepository;
+import fr.vegeto52.prototypep7.data.repository.PlaceDetailsRepository;
 import fr.vegeto52.prototypep7.databinding.FragmentListViewBinding;
 import fr.vegeto52.prototypep7.model.Restaurant;
+import fr.vegeto52.prototypep7.model.RestaurantDetails;
+import fr.vegeto52.prototypep7.model.User;
 import fr.vegeto52.prototypep7.ui.ListRestoViewAdapter;
 import fr.vegeto52.prototypep7.ui.MainActivity;
 import fr.vegeto52.prototypep7.ui.NearbySearchViewModel;
@@ -43,19 +45,33 @@ import fr.vegeto52.prototypep7.ui.NearbySearchViewModel;
 
 public class ListViewFragment extends Fragment {
 
-    NearbySearchViewModel mNearbySearchViewModel = new NearbySearchViewModel();
-    LocationRepository mLocationRepository = new LocationRepository();
-    UserRepository mUserRepository = new UserRepository();
+
+
+
+    ListViewViewModel mListViewViewModel;
+    NearbySearchViewModel mNearbySearchViewModel;
+
+    Location mLocation;
+    List<Restaurant.Results> mRestaurantsList;
+
+    List<User> mUserList;
+    RestaurantDetails.Result mRestaurantDetails;
 
     private FragmentListViewBinding mBinding;
-    private List<Restaurant.Results> mResultsList;
     RecyclerView mRecyclerView;
     private BottomNavigationView mBottomNavigationView;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initViewModel();
     }
 
     @Override
@@ -65,9 +81,6 @@ public class ListViewFragment extends Fragment {
         View view = mBinding.getRoot();
 
         mRecyclerView = view.findViewById(R.id.recyclerview_list_resto);
-
-        enableMyLocation();
-        initViewModel();
 
 
         return view;
@@ -94,49 +107,48 @@ public class ListViewFragment extends Fragment {
         ((AppCompatActivity) requireActivity()).getSupportActionBar().show();
     }
 
-    private void initViewModel() {
-        mNearbySearchViewModel = new ViewModelProvider(this).get(NearbySearchViewModel.class);
-        mNearbySearchViewModel.getRestaurants().observeForever(new Observer<List<Restaurant.Results>>() {
+//    private void initViewModel() {
+//        mNearbySearchViewModel = new ViewModelProvider(this).get(NearbySearchViewModel.class);
+//        mNearbySearchViewModel.getRestaurants().observeForever(new Observer<List<Restaurant.Results>>() {
+//            @Override
+//            public void onChanged(List<Restaurant.Results> results) {
+//                mRestaurantsList = results;
+//                initRecyclerView();
+//                mBinding.listRestoViewEmpty.setVisibility(results.isEmpty() ? View.VISIBLE : View.GONE);
+//            }
+//        });
+//    }
+
+    private void initViewModel(){
+        ListViewViewModelFactory viewModelFactory = ListViewViewModelFactory.getInstance();
+        mListViewViewModel = new ViewModelProvider(this, viewModelFactory).get(ListViewViewModel.class);
+        Log.d("Vérification 1", "Source location : " + mLocation + " " + mRestaurantsList + " " + mUserList + " " + mRestaurantsList + " ");
+        mListViewViewModel.getListViewMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ListViewViewState>() {
             @Override
-            public void onChanged(List<Restaurant.Results> results) {
-                mResultsList = results;
-                initRecyclerView();
-                mBinding.listRestoViewEmpty.setVisibility(results.isEmpty() ? View.VISIBLE : View.GONE);
+            public void onChanged(ListViewViewState listViewViewState) {
+                    mLocation = listViewViewState.getLocation();
+                    mRestaurantsList = listViewViewState.getResults();
+                    mUserList = listViewViewState.getUserList();
+                    mRestaurantDetails = listViewViewState.getResult();
+                    Log.d("Vérification 2", "Source location : " + mLocation + " " + mRestaurantsList + " " + mUserList + " " + mRestaurantsList);
+                    initRecyclerView();
+                    mBinding.listRestoViewEmpty.setVisibility(mRestaurantsList.isEmpty() ? View.VISIBLE : View.GONE);
             }
         });
     }
 
     private void initRecyclerView() {
+        Log.d("Vérification à la con", "Source location : " + mLocation + " " + mRestaurantsList + " " + mUserList + " " + mRestaurantsList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
-        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mResultsList);
+    //    ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList, mLocation, mRestaurantDetails);
+        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), layoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(listRestoViewAdapter);
     }
 
-    private void enableMyLocation() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mLocationRepository.getLocation();
-        } else {
-            requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-    }
 
-    @SuppressLint("MissingPermission")
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        // Si permission, alors location
-        if (requestCode == 1) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mLocationRepository.getLocation();
-            }
-        }
-    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -183,18 +195,18 @@ public class ListViewFragment extends Fragment {
     }
 
     private void sortByName(){
-        Collections.sort(mResultsList, new Comparator<Restaurant.Results>() {
+        Collections.sort(mRestaurantsList, new Comparator<Restaurant.Results>() {
             @Override
             public int compare(Restaurant.Results results, Restaurant.Results t1) {
                 return results.getName().compareToIgnoreCase(t1.getName());
             }
         });
-        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mResultsList);
+        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList);
         mRecyclerView.setAdapter(listRestoViewAdapter);
     }
 
     private void sortByDistance(){
-        Collections.sort(mResultsList, new Comparator<Restaurant.Results>() {
+        Collections.sort(mRestaurantsList, new Comparator<Restaurant.Results>() {
             @Override
             public int compare(Restaurant.Results results, Restaurant.Results t1) {
                 float distance1 = results.getDistance();
@@ -202,12 +214,12 @@ public class ListViewFragment extends Fragment {
                 return Float.compare(distance1, distance2);
             }
         });
-        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mResultsList);
+        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList);
         mRecyclerView.setAdapter(listRestoViewAdapter);
     }
 
     private void sortByRating(){
-        Collections.sort(mResultsList, new Comparator<Restaurant.Results>() {
+        Collections.sort(mRestaurantsList, new Comparator<Restaurant.Results>() {
             @Override
             public int compare(Restaurant.Results results, Restaurant.Results t1) {
                 double rating1 = results.getRating();
@@ -215,12 +227,12 @@ public class ListViewFragment extends Fragment {
                 return Double.compare(rating2, rating1);
             }
         });
-        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mResultsList);
+        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList);
         mRecyclerView.setAdapter(listRestoViewAdapter);
     }
 
     private void sortByWorkmates(){
-        Collections.sort(mResultsList, new Comparator<Restaurant.Results>() {
+        Collections.sort(mRestaurantsList, new Comparator<Restaurant.Results>() {
             @Override
             public int compare(Restaurant.Results results, Restaurant.Results t1) {
                 int workmatesSelected1 = results.getWorkmates_selected();
@@ -228,7 +240,7 @@ public class ListViewFragment extends Fragment {
                 return Integer.compare(workmatesSelected2, workmatesSelected1);
             }
         });
-        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mResultsList);
+        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList);
         mRecyclerView.setAdapter(listRestoViewAdapter);
     }
 
@@ -239,7 +251,7 @@ public class ListViewFragment extends Fragment {
             listRestoViewAdapter = new ListRestoViewAdapter(filteredList);
             mRecyclerView.setAdapter(listRestoViewAdapter);
         } else {
-            listRestoViewAdapter = new ListRestoViewAdapter(mResultsList);
+            listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList);
             mRecyclerView.setAdapter(listRestoViewAdapter);
         }
         listRestoViewAdapter.notifyDataSetChanged();
@@ -247,7 +259,7 @@ public class ListViewFragment extends Fragment {
 
     private List<Restaurant.Results> filterRestaurants(String query){
         List<Restaurant.Results> filteredList = new ArrayList<>();
-        for (Restaurant.Results restaurant : mResultsList) {
+        for (Restaurant.Results restaurant : mRestaurantsList) {
             if (restaurant.getName().toLowerCase().contains(query.toLowerCase())) {
                 filteredList.add(restaurant);
             }

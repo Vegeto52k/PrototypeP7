@@ -118,7 +118,7 @@ public class DetailsRestaurantFragment extends Fragment {
 
     private void initUi(){
         mPlaceDetailsRepository.getPlaceDetails(mPlaceId);
-        mPlaceDetailsRepository.getRestaurantDetailsMutableLiveData().observeForever(new Observer<RestaurantDetails.Result>() {
+        mPlaceDetailsRepository.getPlaceDetailsMutableLiveData().observeForever(new Observer<RestaurantDetails.Result>() {
             @Override
             public void onChanged(RestaurantDetails.Result result) {
             //    ((AppCompatActivity)getActivity()).getSupportActionBar().hide();

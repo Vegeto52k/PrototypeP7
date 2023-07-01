@@ -6,14 +6,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.Observer;
-import androidx.loader.content.AsyncTaskLoader;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -145,7 +143,7 @@ public class NotificationsService extends FirebaseMessagingService {
 
     private void getNameRestaurant(String placeId, RestaurantNameCallback callback) {
         mPlaceDetailsRepository.getPlaceDetails(placeId);
-        mPlaceDetailsRepository.getRestaurantDetailsMutableLiveData().observeForever(new Observer<RestaurantDetails.Result>() {
+        mPlaceDetailsRepository.getPlaceDetailsMutableLiveData().observeForever(new Observer<RestaurantDetails.Result>() {
             @Override
             public void onChanged(RestaurantDetails.Result result) {
                 if (result != null) {
