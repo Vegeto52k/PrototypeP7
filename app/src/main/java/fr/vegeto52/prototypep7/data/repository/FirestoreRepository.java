@@ -43,6 +43,8 @@ public class FirestoreRepository {
                     List<DocumentSnapshot> documents = querySnapshot.getDocuments();
                     for (DocumentSnapshot documentSnapshot : documents){
                         User user = documentSnapshot.toObject(User.class);
+                        String uid = documentSnapshot.getId();
+                        user.setUid(uid);
                         mUserList.add(user);
                     }
                     mListMutableLiveData.setValue(mUserList);

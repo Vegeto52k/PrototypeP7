@@ -1,4 +1,4 @@
-package fr.vegeto52.prototypep7.ui;
+package fr.vegeto52.prototypep7.ui.workmatesViewFragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import fr.vegeto52.prototypep7.R;
 import fr.vegeto52.prototypep7.data.repository.PlaceDetailsRepository;
 import fr.vegeto52.prototypep7.model.RestaurantDetails;
 import fr.vegeto52.prototypep7.model.User;
+import fr.vegeto52.prototypep7.ui.detailsRestaurantFragment.DetailsRestaurantFragment;
 
 /**
  * Created by Vegeto52-PC on 21/04/2023.

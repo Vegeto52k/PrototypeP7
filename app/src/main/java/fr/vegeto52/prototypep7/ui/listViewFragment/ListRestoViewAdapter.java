@@ -1,4 +1,4 @@
-package fr.vegeto52.prototypep7.ui;
+package fr.vegeto52.prototypep7.ui.listViewFragment;
 
 import android.content.Context;
 import android.location.Location;
@@ -16,12 +16,6 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
 import java.util.List;
@@ -33,6 +27,8 @@ import fr.vegeto52.prototypep7.data.repository.NearbySearchRepository;
 import fr.vegeto52.prototypep7.data.repository.PlaceDetailsRepository;
 import fr.vegeto52.prototypep7.model.Restaurant;
 import fr.vegeto52.prototypep7.model.RestaurantDetails;
+import fr.vegeto52.prototypep7.model.User;
+import fr.vegeto52.prototypep7.ui.detailsRestaurantFragment.DetailsRestaurantFragment;
 
 /**
  * Created by Vegeto52-PC on 16/03/2023.
@@ -43,6 +39,7 @@ public class ListRestoViewAdapter extends RecyclerView.Adapter<ListRestoViewAdap
     private static List<Restaurant.Results> mRestaurants;
     private static Location mUserLocation;
     private static RestaurantDetails.Result mRestaurantDetails;
+    private static List<User> mUserList;
     private String mPhotoReference;
 
     String baseUrl = "https://maps.googleapis.com/maps/api/place/photo";
@@ -50,13 +47,13 @@ public class ListRestoViewAdapter extends RecyclerView.Adapter<ListRestoViewAdap
     String photoReference = "&photo_reference=";
     String key ="&key=AIzaSyArVUpejXwZw7QhmdFpVY9rHai7Y2adWrI";
 
-    PlaceDetailsViewModel mPlaceDetailsViewModel = new PlaceDetailsViewModel();
 
 
-    public ListRestoViewAdapter(List<Restaurant.Results> restaurants){
+    public ListRestoViewAdapter(List<Restaurant.Results> restaurants, Location location, List<User> userList){
         mRestaurants = restaurants;
-//        mUserLocation = location;
+        mUserLocation = location;
 //        mRestaurantDetails = restaurantDetails;
+        mUserList = userList;
     }
 
     @NonNull
@@ -156,23 +153,11 @@ public class ListRestoViewAdapter extends RecyclerView.Adapter<ListRestoViewAdap
             mLocation.setLatitude(mLatitude);
             mLocation.setLongitude(mLongitude);
 
-//            if (mLocationUser != null){
-//                float distanceUserRestaurant = mLocationUser.distanceTo(mLocation);
-//                distance.setText(String.format(Locale.US, "%.0f m", distanceUserRestaurant));
-//                results.setDistance(distanceUserRestaurant);
-//            }
-            mLocationRepository.getLocationMutableLiveData().observeForever(new Observer<Location>() {
-                @Override
-                public void onChanged(Location location) {
-                    if (location != null) {
-                        mLocationUser = location;
-                        float distanceUserRestaurant = mLocationUser.distanceTo(mLocation);
-                        distance.setText(String.format(Locale.US,"%.0f m", distanceUserRestaurant));
-                        results.setDistance(distanceUserRestaurant);
-                    }
-                }
-            });
-            mLocationRepository.getLocation();
+            if (mUserLocation != null){
+                float distanceUserRestaurant = mUserLocation.distanceTo(mLocation);
+                distance.setText(String.format(Locale.US, "%.0f m", distanceUserRestaurant));
+                results.setDistance(distanceUserRestaurant);
+            }
 
             mRating = results.getRating();
             if (mRating <= 1.25){
@@ -230,25 +215,19 @@ public class ListRestoViewAdapter extends RecyclerView.Adapter<ListRestoViewAdap
                 }
             });
 
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference collectionReference = db.collection("users");
-        collectionReference.whereEqualTo("selectedResto", results.getPlace_id()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    int count = 0;
-                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
-                        count++;
-                    }
-                    String numberOfPersonsFormat = mContext.getString(R.string.count_user);
-                    String numberOfPersonsString = String.format(numberOfPersonsFormat, count);
-                    numberPerson.setText(numberOfPersonsString);
-                    results.setWorkmates_selected(count);
+        if (mUserList != null){
+            int count = 0;
+            for (User user : mUserList){
+                if (user.getSelectedResto().equals(results.getPlace_id())){
+                    count++;
                 }
             }
-        });
+            String numberOfPersonsFormat = mContext.getString(R.string.count_user);
+            String numberOfPersonsString = String.format(numberOfPersonsFormat, count);
+            numberPerson.setText(numberOfPersonsString);
+            results.setWorkmates_selected(count);
         }
+    }
 
         private String formatTime(String hour, String minutes) {
             int hourInt = Integer.parseInt(hour);

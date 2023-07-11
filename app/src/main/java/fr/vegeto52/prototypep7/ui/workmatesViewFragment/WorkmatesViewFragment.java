@@ -1,11 +1,14 @@
-package fr.vegeto52.prototypep7;
+package fr.vegeto52.prototypep7.ui.workmatesViewFragment;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,16 +27,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.vegeto52.prototypep7.databinding.FragmentListViewBinding;
+import fr.vegeto52.prototypep7.R;
+import fr.vegeto52.prototypep7.data.viewModelFactory.ViewModelFactory;
 import fr.vegeto52.prototypep7.databinding.FragmentWorkmatesViewBinding;
 import fr.vegeto52.prototypep7.model.User;
 import fr.vegeto52.prototypep7.ui.MainActivity;
-import fr.vegeto52.prototypep7.ui.PeopleRestoDetailsAdapter;
-import fr.vegeto52.prototypep7.ui.WorkmatesViewAdapter;
 
 
 public class WorkmatesViewFragment extends Fragment {
 
+    WorkmatesViewViewModel mWorkmatesViewViewModel;
     FragmentWorkmatesViewBinding mBinding;
     RecyclerView mRecyclerView;
     List<User> mUserList = new ArrayList<>();
@@ -48,11 +51,30 @@ public class WorkmatesViewFragment extends Fragment {
 
         mRecyclerView = view.findViewById(R.id.recyclerview_list_workmates);
 
-        initUI();
+    //    initUI();
 
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initViewModel();
+    }
+
+    private void initViewModel(){
+        ViewModelFactory viewModelFactory = ViewModelFactory.getInstance();
+        mWorkmatesViewViewModel = new ViewModelProvider(this, viewModelFactory).get(WorkmatesViewViewModel.class);
+        mWorkmatesViewViewModel.getWorkmatesViewMutableLiveData().observe(getViewLifecycleOwner(), new Observer<WorkmatesViewViewState>() {
+            @Override
+            public void onChanged(WorkmatesViewViewState workmatesViewViewState) {
+                mUserList = workmatesViewViewState.getUserList();
+                initRecyclerView();
+                mBinding.listWorkmateViewEmpty.setVisibility(mUserList.isEmpty() ? View.VISIBLE : View.GONE);
+            //    getUserList();
+            }
+        });
+    }
     private void initUI(){
         getUserList();
     }
@@ -69,7 +91,7 @@ public class WorkmatesViewFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mUserList.clear();
+    //    mUserList.clear();
 
         if (isAdded() && isVisible()) {
             if (mBottomNavigationView != null) {

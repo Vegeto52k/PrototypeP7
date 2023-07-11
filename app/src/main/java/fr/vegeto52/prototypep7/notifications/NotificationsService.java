@@ -32,7 +32,6 @@ import fr.vegeto52.prototypep7.data.repository.PlaceDetailsRepository;
 import fr.vegeto52.prototypep7.model.RestaurantDetails;
 import fr.vegeto52.prototypep7.model.User;
 import fr.vegeto52.prototypep7.ui.MainActivity;
-import fr.vegeto52.prototypep7.ui.NearbySearchViewModel;
 
 /**
  * Created by Vegeto52-PC on 29/05/2023.
@@ -43,7 +42,6 @@ public class NotificationsService extends FirebaseMessagingService {
     private final String NOTIFICATION_TAG = "FIREBASEOC";
     private final String CHANNEL_ID = "MyAppChannel";
 
-    NearbySearchViewModel mNearbySearchViewModel = new NearbySearchViewModel();
     PlaceDetailsRepository mPlaceDetailsRepository = new PlaceDetailsRepository();
 
     User mUser;

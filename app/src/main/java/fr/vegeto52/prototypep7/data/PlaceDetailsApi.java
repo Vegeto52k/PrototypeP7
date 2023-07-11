@@ -17,6 +17,7 @@ public interface PlaceDetailsApi {
     @GET("details/json?")
     Call<RestaurantDetails> getDetails(
             @Query("place_id") String placeId,
+            @Query("fields")String fields,
             @Query("key") String map_key
     );
 }

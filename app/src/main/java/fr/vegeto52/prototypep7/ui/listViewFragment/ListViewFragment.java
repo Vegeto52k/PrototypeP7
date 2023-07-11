@@ -1,4 +1,4 @@
-package fr.vegeto52.prototypep7;
+package fr.vegeto52.prototypep7.ui.listViewFragment;
 
 import android.content.Context;
 import android.location.Location;
@@ -30,17 +30,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import fr.vegeto52.prototypep7.data.repository.FirestoreRepository;
-import fr.vegeto52.prototypep7.data.repository.LocationRepository;
-import fr.vegeto52.prototypep7.data.repository.NearbySearchRepository;
-import fr.vegeto52.prototypep7.data.repository.PlaceDetailsRepository;
+import fr.vegeto52.prototypep7.R;
+import fr.vegeto52.prototypep7.data.viewModelFactory.ViewModelFactory;
 import fr.vegeto52.prototypep7.databinding.FragmentListViewBinding;
 import fr.vegeto52.prototypep7.model.Restaurant;
 import fr.vegeto52.prototypep7.model.RestaurantDetails;
 import fr.vegeto52.prototypep7.model.User;
-import fr.vegeto52.prototypep7.ui.ListRestoViewAdapter;
 import fr.vegeto52.prototypep7.ui.MainActivity;
-import fr.vegeto52.prototypep7.ui.NearbySearchViewModel;
+
 
 
 public class ListViewFragment extends Fragment {
@@ -49,7 +46,6 @@ public class ListViewFragment extends Fragment {
 
 
     ListViewViewModel mListViewViewModel;
-    NearbySearchViewModel mNearbySearchViewModel;
 
     Location mLocation;
     List<Restaurant.Results> mRestaurantsList;
@@ -105,32 +101,18 @@ public class ListViewFragment extends Fragment {
             }
         }
         ((AppCompatActivity) requireActivity()).getSupportActionBar().show();
+
     }
 
-//    private void initViewModel() {
-//        mNearbySearchViewModel = new ViewModelProvider(this).get(NearbySearchViewModel.class);
-//        mNearbySearchViewModel.getRestaurants().observeForever(new Observer<List<Restaurant.Results>>() {
-//            @Override
-//            public void onChanged(List<Restaurant.Results> results) {
-//                mRestaurantsList = results;
-//                initRecyclerView();
-//                mBinding.listRestoViewEmpty.setVisibility(results.isEmpty() ? View.VISIBLE : View.GONE);
-//            }
-//        });
-//    }
-
     private void initViewModel(){
-        ListViewViewModelFactory viewModelFactory = ListViewViewModelFactory.getInstance();
+        ViewModelFactory viewModelFactory = ViewModelFactory.getInstance();
         mListViewViewModel = new ViewModelProvider(this, viewModelFactory).get(ListViewViewModel.class);
-        Log.d("Vérification 1", "Source location : " + mLocation + " " + mRestaurantsList + " " + mUserList + " " + mRestaurantsList + " ");
         mListViewViewModel.getListViewMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ListViewViewState>() {
             @Override
             public void onChanged(ListViewViewState listViewViewState) {
                     mLocation = listViewViewState.getLocation();
                     mRestaurantsList = listViewViewState.getResults();
                     mUserList = listViewViewState.getUserList();
-                    mRestaurantDetails = listViewViewState.getResult();
-                    Log.d("Vérification 2", "Source location : " + mLocation + " " + mRestaurantsList + " " + mUserList + " " + mRestaurantsList);
                     initRecyclerView();
                     mBinding.listRestoViewEmpty.setVisibility(mRestaurantsList.isEmpty() ? View.VISIBLE : View.GONE);
             }
@@ -138,10 +120,8 @@ public class ListViewFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        Log.d("Vérification à la con", "Source location : " + mLocation + " " + mRestaurantsList + " " + mUserList + " " + mRestaurantsList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
-    //    ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList, mLocation, mRestaurantDetails);
-        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList);
+        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList, mLocation, mUserList);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), layoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -201,7 +181,7 @@ public class ListViewFragment extends Fragment {
                 return results.getName().compareToIgnoreCase(t1.getName());
             }
         });
-        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList);
+        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList, mLocation, mUserList);
         mRecyclerView.setAdapter(listRestoViewAdapter);
     }
 
@@ -214,7 +194,7 @@ public class ListViewFragment extends Fragment {
                 return Float.compare(distance1, distance2);
             }
         });
-        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList);
+        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList, mLocation, mUserList);
         mRecyclerView.setAdapter(listRestoViewAdapter);
     }
 
@@ -227,7 +207,7 @@ public class ListViewFragment extends Fragment {
                 return Double.compare(rating2, rating1);
             }
         });
-        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList);
+        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList, mLocation, mUserList);
         mRecyclerView.setAdapter(listRestoViewAdapter);
     }
 
@@ -240,7 +220,7 @@ public class ListViewFragment extends Fragment {
                 return Integer.compare(workmatesSelected2, workmatesSelected1);
             }
         });
-        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList);
+        ListRestoViewAdapter listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList, mLocation, mUserList);
         mRecyclerView.setAdapter(listRestoViewAdapter);
     }
 
@@ -248,10 +228,10 @@ public class ListViewFragment extends Fragment {
         ListRestoViewAdapter listRestoViewAdapter;
         if (query.length() >= 3){
             List<Restaurant.Results> filteredList = filterRestaurants(query);
-            listRestoViewAdapter = new ListRestoViewAdapter(filteredList);
+            listRestoViewAdapter = new ListRestoViewAdapter(filteredList, mLocation, mUserList);
             mRecyclerView.setAdapter(listRestoViewAdapter);
         } else {
-            listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList);
+            listRestoViewAdapter = new ListRestoViewAdapter(mRestaurantsList, mLocation, mUserList);
             mRecyclerView.setAdapter(listRestoViewAdapter);
         }
         listRestoViewAdapter.notifyDataSetChanged();

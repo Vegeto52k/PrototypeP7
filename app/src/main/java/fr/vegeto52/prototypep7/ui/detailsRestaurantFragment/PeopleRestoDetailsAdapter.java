@@ -1,4 +1,4 @@
-package fr.vegeto52.prototypep7.ui;
+package fr.vegeto52.prototypep7.ui.detailsRestaurantFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;

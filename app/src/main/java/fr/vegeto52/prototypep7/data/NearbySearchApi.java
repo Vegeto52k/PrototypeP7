@@ -12,6 +12,7 @@ import retrofit2.http.Query;
 public interface NearbySearchApi {
 
     // URL : https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=43.408025,5.92382&radius=1500&type=restaurant&key=AIzaSyArVUpejXwZw7QhmdFpVY9rHai7Y2adWrI
+    // URL Test : https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=43.408025,5.92382&radius=1500&type=restaurant&fields=rating&key=AIzaSyArVUpejXwZw7QhmdFpVY9rHai7Y2adWrI
 
     @GET("nearbysearch/json?")
     Call<ResponseBody> getRestaurantsTest(

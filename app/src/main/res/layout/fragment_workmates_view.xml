@@ -5,7 +5,7 @@
     android:id="@+id/fragment_list_workmates"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WorkmatesViewFragment">
+    tools:context=".ui.workmatesViewFragment.WorkmatesViewFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_list_workmates"

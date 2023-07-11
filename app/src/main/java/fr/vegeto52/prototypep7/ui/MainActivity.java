@@ -1,12 +1,8 @@
 package fr.vegeto52.prototypep7.ui;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
@@ -15,19 +11,10 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.BlurMaskFilter;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,20 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
@@ -57,19 +36,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import fr.vegeto52.prototypep7.AuthenticationActivity;
-import fr.vegeto52.prototypep7.ListViewFragment;
-import fr.vegeto52.prototypep7.MapViewFragment;
-import fr.vegeto52.prototypep7.R;
-import fr.vegeto52.prototypep7.WorkmatesViewFragment;
-import fr.vegeto52.prototypep7.data.repository.LocationRepository;
-import fr.vegeto52.prototypep7.data.repository.UserRepository;
 import fr.vegeto52.prototypep7.databinding.ActivityMainBinding;
-import fr.vegeto52.prototypep7.model.Restaurant;
+import fr.vegeto52.prototypep7.ui.detailsRestaurantFragment.DetailsRestaurantFragment;
+import fr.vegeto52.prototypep7.ui.listViewFragment.ListViewFragment;
+import fr.vegeto52.prototypep7.R;
+import fr.vegeto52.prototypep7.ui.mapViewFragment.MapViewFragment;
+import fr.vegeto52.prototypep7.ui.workmatesViewFragment.WorkmatesViewFragment;
 import fr.vegeto52.prototypep7.model.User;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.ColorFilterTransformation;
@@ -77,10 +50,6 @@ import jp.wasabeef.glide.transformations.ColorFilterTransformation;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-
-    NearbySearchViewModel mNearbySearchViewModel = new NearbySearchViewModel();
-    LocationRepository mLocationRepository = new LocationRepository();
-    UserRepository mUserRepository = new UserRepository();
 
     private ActivityMainBinding mBinding;
 
